@@ -30,18 +30,17 @@ export class UserService{
     }
     }
     
-    async changeUserBoss(userId: string, newBossId: string) {
-    try {
-      const boss = await this.prismaService.boss.findUnique({ where: { id: userId } });
-      if (!boss) {
+  async changeUserBoss(id: string, newBossId: string, userId: string) {
+    const isBoss = await this.prismaService.boss.findUnique({ where: { id } });
+      if (!isBoss) {
         throw new Error('Permission denied');
       }
-
+    try {
+      console.log(newBossId)
       const updatedUser = await this.prismaService.user.update({
         where: { id: userId },
         data: { bossId: newBossId },
       });
-      
       return updatedUser;
     } catch (error) {
       console.error(error);

@@ -22,8 +22,8 @@ let UserController = class UserController {
     async getUsers(userId) {
         return await this.userService.getUsers(userId);
     }
-    async changeUserBoss(userId, newBossId) {
-        return await this.userService.changeUserBoss(userId, newBossId);
+    async changeUserBoss(id, newBossId, userId) {
+        return await this.userService.changeUserBoss(id, newBossId, userId);
     }
 };
 exports.UserController = UserController;
@@ -35,11 +35,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUsers", null);
 __decorate([
-    (0, common_1.Put)(':userId/change-boss'),
-    __param(0, (0, common_1.Param)('userId')),
+    (0, common_1.Put)(':id/change-boss'),
+    __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)('newBossId')),
+    __param(2, (0, common_1.Body)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "changeUserBoss", null);
 exports.UserController = UserController = __decorate([

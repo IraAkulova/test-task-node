@@ -3,7 +3,7 @@ export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
     getUsers(userId: string): Promise<any>;
-    changeUserBoss(userId: string, newBossId: string): Promise<{
+    changeUserBoss(id: string, newBossId: string, userId: string): Promise<{
         id: string;
         name: string;
         email: string;

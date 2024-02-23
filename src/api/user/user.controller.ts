@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -10,8 +10,8 @@ export class UserController {
     return await this.userService.getUsers(userId);
   }
     
-  @Put(':userId/change-boss')
-  async changeUserBoss(@Param('userId') userId: string, @Body('newBossId') newBossId: string) {
-    return await this.userService.changeUserBoss(userId,  newBossId);
+  @Put(':id/change-boss')
+  async changeUserBoss(@Param('id') id: string, @Body('newBossId') newBossId: string, @Body('userId') userId: string) {
+    return await this.userService.changeUserBoss(id, newBossId, userId);
   }
 }

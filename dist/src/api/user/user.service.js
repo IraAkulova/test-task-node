@@ -41,12 +41,13 @@ let UserService = class UserService {
             throw new Error('Internal Server Error');
         }
     }
-    async changeUserBoss(userId, newBossId) {
+    async changeUserBoss(id, newBossId, userId) {
+        const isBoss = await this.prismaService.boss.findUnique({ where: { id } });
+        if (!isBoss) {
+            throw new Error('Permission denied');
+        }
         try {
-            const boss = await this.prismaService.boss.findUnique({ where: { id: userId } });
-            if (!boss) {
-                throw new Error('Permission denied');
-            }
+            console.log(newBossId);
             const updatedUser = await this.prismaService.user.update({
                 where: { id: userId },
                 data: { bossId: newBossId },
