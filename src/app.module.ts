@@ -1,9 +1,10 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { AuthModule } from './api/auth/auth.module';
 import { APP_PIPE } from "@nestjs/core";
+import { UserModule } from './api/user/user.module';
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, UserModule],
   providers: [
     {
       provide: APP_PIPE,

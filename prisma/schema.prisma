@@ -12,7 +12,7 @@ model Admin {
   email       String        @unique @db.VarChar(255)
   password    String
   name        String?       @db.Text
-  verified    Boolean       @default(false)
+  role        String? 
   Boss        Boss[]
   User        User[]
 
@@ -24,9 +24,9 @@ model Boss {
   email      String       @unique @db.VarChar(255)
   password   String
   name       String?      @db.Text
-  verified   Boolean      @default(false)
+  role       String? 
   admin      Admin?       @relation(fields: [adminId], references: [id])
-  adminId    String?
+  adminId    String?      
   User       User[]
 
   @@map("bosses")
@@ -37,7 +37,7 @@ model User {
   name        String?
   email       String        @unique @db.VarChar(255)
   password    String
-  verified    Boolean       @default(false)
+  role        String? 
   admin       Admin?        @relation(fields: [adminId], references: [id])
   adminId     String?
   boss        Boss?         @relation(fields: [bossId], references: [id])

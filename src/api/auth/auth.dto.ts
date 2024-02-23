@@ -21,8 +21,18 @@ export class AuthDto {
   })
   password: string;
 
-  bossId: string;
-  adminId: string;
+  @IsString({
+    optional: true
+  })
+  role?: 'user' | 'boss' | 'admin';
 
-  verified: boolean;
+ @IsString({
+    optional: true
+  })
+ bossId?: string;
+  
+  @IsString({
+    optional: true
+  })
+  adminId?: string;
 }
