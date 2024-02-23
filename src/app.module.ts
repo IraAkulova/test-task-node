@@ -3,7 +3,7 @@ import { AuthModule } from './api/auth/auth.module';
 import { APP_PIPE } from "@nestjs/core";
 
 @Module({
-  imports: [AuthModule, AdministratorModule, BossModule, UserModule],
+  imports: [AuthModule],
   providers: [
     {
       provide: APP_PIPE,
