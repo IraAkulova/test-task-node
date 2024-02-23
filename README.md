@@ -1,73 +1,36 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+Project Title: User Management System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Overview
+This project implements a User Management System where users, bosses, and administrators can interact with the system according to their roles. It provides functionality for user authentication, role-based access control, and management of user relationships.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Features
+User Authentication: Users can register, log in, and authenticate using their email and password credentials.
 
-## Description
+Role-based Access Control: Different roles (user, boss, admin) have specific permissions and access levels within the system.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+User Management: Users can view their own information, bosses can manage their subordinates, and administrators have access to all users.
 
-## Installation
+Change Boss: Users can change their boss, if allowed by the system.
 
-```bash
-$ npm install
-```
+Technologies Used
+NestJS: A progressive Node.js framework for building efficient, reliable, and scalable server-side applications.
 
-## Running the app
+Prisma: A modern database toolkit for TypeScript and Node.js that simplifies database access and management.
 
-```bash
-# development
-$ npm run start
+PostgreSQL: A powerful, open-source relational database system used for storing user and role information.
 
-# watch mode
-$ npm run start:dev
+bcrypt: A library for hashing passwords securely before storing them in the database.
 
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Setup Instructions
+Clone the repository to your local machine.
+Install dependencies using npm install.
+Set up environment variables, including database connection details.
+DATABASE_URL=postgresql://postgres:password@localhost:5432/postgres
+Run the database migrations using npx prisma migrate dev.
+Start the server using npm start.
+Access the application using the provided endpoints.
+API Endpoints
+POST /auth/register: Register a new user.
+POST /auth/login: Log in an existing user.
+GET /users: Retrieve user information based on role and permissions.
+PUT /users/:userId/change-boss: Change the boss of a user.
