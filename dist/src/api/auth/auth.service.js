@@ -86,7 +86,8 @@ let AuthService = class AuthService {
             if (!userPasswordMatch) {
                 throw new Error("Invalid credentials");
             }
-            return { message: "Authentication successful", user };
+            const { id, name } = user;
+            return { message: "Authentication successful", id, name, email };
         }
         catch (error) {
             console.error(error);

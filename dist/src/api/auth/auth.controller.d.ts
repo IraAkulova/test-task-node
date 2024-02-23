@@ -1,6 +1,5 @@
 import { AuthDto } from './auth.dto';
 import { AuthService } from './auth.service';
-import { User } from '@prisma/client';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
@@ -9,6 +8,8 @@ export declare class AuthController {
     }>;
     authenticateUser(authDto: AuthDto): Promise<{
         message: string;
-        user: User;
+        id: string;
+        name: string;
+        email: string;
     }>;
 }

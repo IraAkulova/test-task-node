@@ -12,7 +12,7 @@ async register(@Body() authDto: AuthDto): Promise<{message: string}> {
     return await this.authService.registerUser(authDto);
   }
 @Post('authenticate')
-  async authenticateUser(@Body() authDto: AuthDto): Promise<{message: string, user: User}> {
+  async authenticateUser(@Body() authDto: AuthDto): Promise<{ message: string, id: string, name: string, email: string }> {
     return await this.authService.authenticateUser(authDto);
   }
 }

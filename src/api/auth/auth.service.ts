@@ -51,7 +51,7 @@ export class AuthService {
 
   async authenticateUser(
     authDto: AuthDto
-  ): Promise<{ message: string; user: User }> {
+  ): Promise<{ message: string, id: string, name: string, email: string }> {
     try {
       const { email, password, role } = authDto;
       let user;
@@ -85,8 +85,9 @@ export class AuthService {
       if (!userPasswordMatch) {
         throw new Error("Invalid credentials");
       }
+      const { id, name } = user;
 
-      return { message: "Authentication successful", user };
+      return { message: "Authentication successful", id, name, email };
     } catch (error) {
       console.error(error);
       throw new Error("Internal Server Error");
