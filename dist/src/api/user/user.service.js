@@ -16,21 +16,23 @@ let UserService = class UserService {
     constructor(prismaService) {
         this.prismaService = prismaService;
     }
-    async getUsers(adminId, bossId, req) {
+    async getUsers(userId) {
         try {
             let users;
-            if (adminId) {
-                users = await this.prismaService.user.findMany();
+            const user = await this.prismaService.user.findUnique({ where: { id: userId } });
+            const boss = await this.prismaService.boss.findUnique({ where: { id: userId } });
+            const admin = await this.prismaService.admin.findUnique({ where: { id: userId } });
+            if (admin) {
+                const bosses = await this.prismaService.boss.findMany();
+                const subs = await this.prismaService.user.findMany();
+                users = [...subs, ...bosses];
             }
-            else if (bossId) {
-                users = await this.prismaService.user.findMany({
-                    where: {
-                        OR: [{ id: bossId }, { bossId: bossId }],
-                    },
-                });
+            else if (boss) {
+                const subs = await this.prismaService.user.findMany({ where: { bossId: userId } });
+                users = [boss, ...subs];
             }
-            else {
-                users = await this.prismaService.user.findMany({ where: { id: req.userId } });
+            else if (user) {
+                users = await this.prismaService.user.findUnique({ where: { id: userId } });
             }
             return users;
         }

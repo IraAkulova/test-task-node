@@ -13,6 +13,7 @@ model Admin {
   password    String
   name        String?       @db.Text
   role        String? 
+  isLogedIn   Boolean       @default(false)
   Boss        Boss[]
   User        User[]
 
@@ -24,7 +25,8 @@ model Boss {
   email      String       @unique @db.VarChar(255)
   password   String
   name       String?      @db.Text
-  role       String? 
+  role       String?
+  isLogedIn  Boolean      @default(false)
   admin      Admin?       @relation(fields: [adminId], references: [id])
   adminId    String?      
   User       User[]
@@ -37,7 +39,8 @@ model User {
   name        String?
   email       String        @unique @db.VarChar(255)
   password    String
-  role        String? 
+  role        String?
+  isLogedIn   Boolean       @default(false)
   admin       Admin?        @relation(fields: [adminId], references: [id])
   adminId     String?
   boss        Boss?         @relation(fields: [bossId], references: [id])

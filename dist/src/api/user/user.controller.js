@@ -19,8 +19,8 @@ let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
-    async getUsers(adminId, bossId, req) {
-        return await this.userService.getUsers(adminId, bossId, req);
+    async getUsers(userId) {
+        return await this.userService.getUsers(userId);
     }
     async changeUserBoss(userId, newBossId) {
         return await this.userService.changeUserBoss(userId, newBossId);
@@ -29,11 +29,9 @@ let UserController = class UserController {
 exports.UserController = UserController;
 __decorate([
     (0, common_1.Get)(),
-    __param(0, (0, common_1.Query)('adminId')),
-    __param(1, (0, common_1.Query)('bossId')),
-    __param(2, (0, common_1.Req)()),
+    __param(0, (0, common_1.Query)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUsers", null);
 __decorate([

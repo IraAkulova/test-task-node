@@ -4,20 +4,23 @@ import { PrismaService } from '../../prisma/prisma.service';
 @Injectable()
 export class UserService{
     constructor(private readonly prismaService: PrismaService) { }
-    async getUsers(adminId: string,  bossId: string, req: any) {
+    async getUsers(userId: string) {
     try {
       let users;
+      const user = await this.prismaService.user.findUnique({ where: { id: userId } });
+      const boss = await this.prismaService.boss.findUnique({ where: { id: userId } }); 
+      const admin = await this.prismaService.admin.findUnique({ where: { id: userId } }); 
       
-      if (adminId) {
-        users = await this.prismaService.user.findMany();
-      } else if (bossId) {
-        users = await this.prismaService.user.findMany({
-          where: {
-            OR: [{ id: bossId }, { bossId: bossId }],
-          },
-        });
-      } else {
-        users = await this.prismaService.user.findMany({ where: { id: req.userId } });
+      if (admin) {
+        const bosses = await this.prismaService.boss.findMany();
+        const subs = await this.prismaService.user.findMany();
+        users = [...subs, ...bosses];
+      } else if (boss) {
+        const subs = await this.prismaService.user.findMany({ where: { bossId: userId } });
+        users = [boss, ...subs]
+      
+      } else if(user){
+        users = await this.prismaService.user.findUnique({ where: { id: userId } });
       }
       
       return users;

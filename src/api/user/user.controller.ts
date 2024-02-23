@@ -6,8 +6,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getUsers(@Query('adminId') adminId: string, @Query('bossId') bossId: string, @Req() req: any) {
-    return await this.userService.getUsers(adminId,  bossId, req);
+  async getUsers(@Query('userId') userId: string) {
+    return await this.userService.getUsers(userId);
   }
     
   @Put(':userId/change-boss')

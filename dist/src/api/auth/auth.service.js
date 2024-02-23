@@ -65,25 +65,45 @@ let AuthService = class AuthService {
                     user = await this.prismaService.user.findUnique({
                         where: { email },
                     });
+                    const userPasswordMatch = await bcrypt.compare(password, user.password);
+                    if (!userPasswordMatch) {
+                        throw new Error("Invalid credentials");
+                    }
+                    await this.prismaService.user.update({
+                        where: { email },
+                        data: { isLogedIn: true },
+                    });
                     break;
                 case "boss":
                     user = await this.prismaService.boss.findUnique({
                         where: { email },
+                    });
+                    const bossPasswordMatch = await bcrypt.compare(password, user.password);
+                    if (!bossPasswordMatch) {
+                        throw new Error("Invalid credentials");
+                    }
+                    await this.prismaService.boss.update({
+                        where: { email },
+                        data: { isLogedIn: true },
                     });
                     break;
                 case "admin":
                     user = await this.prismaService.admin.findUnique({
                         where: { email },
                     });
+                    const adminPasswordMatch = await bcrypt.compare(password, user.password);
+                    if (!adminPasswordMatch) {
+                        throw new Error("Invalid credentials");
+                    }
+                    await this.prismaService.admin.update({
+                        where: { email },
+                        data: { isLogedIn: true },
+                    });
                     break;
                 default:
                     throw new Error("Invalid role");
             }
             if (!user) {
-                throw new Error("Invalid credentials");
-            }
-            const userPasswordMatch = await bcrypt.compare(password, user.password);
-            if (!userPasswordMatch) {
                 throw new Error("Invalid credentials");
             }
             const { id, name } = user;
