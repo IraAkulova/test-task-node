@@ -1,5 +1,5 @@
 import { PrismaService } from "../../prisma/prisma.service";
-import { AuthDto } from "./auth.dto";
+import { AuthDto } from "../../dto/auth.dto";
 export declare class AuthService {
     private readonly prismaService;
     private readonly logger;

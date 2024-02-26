@@ -3,14 +3,30 @@ import {
   NotFoundException,
   ForbiddenException,
 } from "@nestjs/common";
+import * as bcrypt from "bcrypt";
+import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from "../../prisma/prisma.service";
 import { Logger } from "@nestjs/common";
+import { AuthDto } from "src/dto/auth.dto";
 
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name);
 
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
+  
+  async createUser(authDto: AuthDto): Promise<void> {
+    const { role, ...createData } = authDto;
+    const hashedPassword = await bcrypt.hash(authDto.password, 10);
+    await this.prismaService.user.create({
+          data: {
+            ...authDto,
+            password: hashedPassword,
+            bossId: role === "admin" ? uuidv4() : 'ba08d59a-af06-41ef-9b1a-86a192515850',
+          },
+    });
+    return;
+  }
 
   async getUsers(userId: string) {
     try {

@@ -24,33 +24,13 @@ let AuthService = class AuthService {
         const { role } = authDto;
         try {
             const hashedPassword = await bcrypt.hash(authDto.password, 10);
-            if (role === "admin") {
-                await this.prismaService.user.create({
-                    data: {
-                        ...authDto,
-                        password: hashedPassword,
-                        bossId: (0, uuid_1.v4)(),
-                    },
-                });
-            }
-            else if (role === "boss") {
-                await this.prismaService.user.create({
-                    data: {
-                        ...authDto,
-                        password: hashedPassword,
-                        bossId: 'ba08d59a-af06-41ef-9b1a-86a192515850',
-                    },
-                });
-            }
-            else {
-                await this.prismaService.user.create({
-                    data: {
-                        ...authDto,
-                        password: hashedPassword,
-                        bossId: 'ba08d59a-af06-41ef-9b1a-86a192515850',
-                    },
-                });
-            }
+            await this.prismaService.user.create({
+                data: {
+                    ...authDto,
+                    password: hashedPassword,
+                    bossId: role === "admin" ? (0, uuid_1.v4)() : 'ba08d59a-af06-41ef-9b1a-86a192515850',
+                },
+            });
             return { message: "Registration successful" };
         }
         catch (error) {
