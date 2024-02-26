@@ -1,50 +1,71 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from "@nestjs/common";
+import { PrismaService } from "../../prisma/prisma.service";
+import { Logger } from "@nestjs/common";
 
 @Injectable()
-export class UserService{
-    constructor(private readonly prismaService: PrismaService) { }
-    async getUsers(userId: string) {
+export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async getUsers(userId: string) {
     try {
-      let users;
-      const user = await this.prismaService.user.findUnique({ where: { id: userId } });
-      const boss = await this.prismaService.boss.findUnique({ where: { id: userId } }); 
-      const admin = await this.prismaService.admin.findUnique({ where: { id: userId } }); 
-      
-      if (admin) {
-        const bosses = await this.prismaService.boss.findMany();
-        const subs = await this.prismaService.user.findMany();
-        users = [...subs, ...bosses];
-      } else if (boss) {
-        const subs = await this.prismaService.user.findMany({ where: { bossId: userId } });
-        users = [boss, ...subs]
-      
-      } else if(user){
-        users = await this.prismaService.user.findUnique({ where: { id: userId } });
+      const user = await this.prismaService.user.findUnique({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        throw new NotFoundException("User not found");
       }
-      
+
+      let users;
+
+      if (user.role === "admin" || user.role === "boss") {
+        users = await this.prismaService.$queryRaw`
+          WITH RECURSIVE UserHierarchy AS (
+            SELECT * FROM "users" WHERE id = ${userId}
+            UNION
+            SELECT u.* FROM "users" u
+            INNER JOIN UserHierarchy h ON u."bossId" = h.id
+          )
+          SELECT * FROM UserHierarchy;  
+        `;
+      } else {
+        users = [user];
+      }
+
       return users;
     } catch (error) {
-      console.error(error);
-      throw new Error('Internal Server Error');
+      this.logger.error(error);
+      throw new Error("Internal Server Error");
     }
-    }
-    
+  }
   async changeUserBoss(id: string, newBossId: string, userId: string) {
-    const isBoss = await this.prismaService.boss.findUnique({ where: { id } });
-      if (!isBoss) {
-        throw new Error('Permission denied');
-      }
+    const isBoss = await this.prismaService.user.findUnique({ where: { id } });
+
+    if (!isBoss) {
+      throw new ForbiddenException("Permission denied");
+    }
+
     try {
-      console.log(newBossId)
       const updatedUser = await this.prismaService.user.update({
         where: { id: userId },
         data: { bossId: newBossId },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          bossId: true,
+        },
       });
       return updatedUser;
     } catch (error) {
-      console.error(error);
-      throw new Error('Internal Server Error');
+      this.logger.error(error);
+      throw new Error("Internal Server Error");
     }
   }
 }

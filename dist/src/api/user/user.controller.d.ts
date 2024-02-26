@@ -5,12 +5,8 @@ export declare class UserController {
     getUsers(userId: string): Promise<any>;
     changeUserBoss(id: string, newBossId: string, userId: string): Promise<{
         id: string;
-        name: string;
         email: string;
-        password: string;
-        role: string;
-        isLogedIn: boolean;
-        adminId: string;
+        name: string;
         bossId: string;
     }>;
 }
